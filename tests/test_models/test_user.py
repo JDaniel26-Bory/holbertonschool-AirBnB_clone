@@ -19,8 +19,8 @@ class UserTestCase(unittest.TestCase):
         user = User()
         self.assertEqual(user.first_name, "")
         
-    def test_first_name_initialization(self):
-        """Test the initialization of the first_name attribute."""
+    def test_last_name_initialization(self):
+        """Test the initialization of the last_name attribute."""
         user = User()
-        self.assertEqual(user.first_name, "")    
+        self.assertEqual(user.last_name, "")    
 
