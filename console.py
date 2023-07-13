@@ -3,6 +3,7 @@
 
 import cmd
 
+
 class HBNBCommand(cmd.Cmd):
     """Command interpreter class."""
 
@@ -17,9 +18,14 @@ class HBNBCommand(cmd.Cmd):
         print()  # Print a newline before exiting
         return True
 
+    def help_quit(self):
+        """Print help message for quit command."""
+        print("Quit command to exit the program\n")
+
     def emptyline(self):
         """Do nothing when an empty line is entered."""
         pass
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
