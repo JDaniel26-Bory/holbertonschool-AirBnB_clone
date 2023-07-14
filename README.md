@@ -36,7 +36,7 @@ This project is written in Python 3.0, and use the pycodestyle(version 2.8.*)
 | tests/test_models/engine | test_console.py | unittest for functionalities of console.py |
 
 ### How to start the command interpreter
-1. git clone https://github.com/yuan-fang-228/holbertonschool-AirBnB_clone.git
+1. git clone https://github.com/JDaniel26-Bory/holbertonschool-AirBnB_clone
 1. run ./console under the project folder to start this interpreter.
 1. type in built-in commands
 1. use "quit" or EOF to quit the interpreter
