@@ -1,36 +1,52 @@
+#!/usr/bin/python3
+"""import"""
 import unittest
-from datetime import datetime
 from models.base_model import BaseModel
+from datetime import datetime
+import os
+
 
 class TestBaseModel(unittest.TestCase):
+    """Test cases for BaseModel class"""
 
-    def setUp(self):
-        self.base_model = BaseModel()
-    
-    def tearDown(self):
-        self.base_model = None
-    
-    def test_to_dict(self):
-        expected_keys = ['id', 'created_at', 'updated_at', '__class__']
-        obj = self.base_model.to_dict()
-        self.assertEqual(obj['__class__'], 'BaseModel')
-        self.assertIsInstance(obj['created_at'], str)
-        self.assertIsInstance(obj['updated_at'], str)
+    @classmethod
+    def setUpClass(cls):
+        """Sets the class/obj"""
+        cls.base_model = BaseModel()
+        try:
+            os.rename("file.json", "test_file.json")
+        except Exception:
+            pass
 
-    def test_id(self):
-        base_model = BaseModel()
-        self.assertIsInstance(base_model.id, str)
+    @classmethod
+    def tearDownClass(cls):
+        try:
+            os.remove("file.json")
+            os.rename("test_file.json", "file.json")
+        except Exception:
+            pass
 
-    def test_created_at(self):
-        base_model = BaseModel()
-        self.assertIsInstance(base_model.created_at, datetime)
+    def test_save_method(self):
+        """Test save method"""
+        base1 = BaseModel()
+        update = base1.updated_at
+        base1.save()
+        self.assertLess(update, base1.updated_at)
+        self.assertTrue(os.path.exists("file.json"))
 
-    def test_str(self):
-        base_model = BaseModel()
-        expected_str = f"[BaseModel] ({base_model.id}) {base_model.__dict__}"
-        self.assertEqual(str(base_model), expected_str)
+    def test_str_method(self):
+        """Test case for str instance representation"""
+        cls_name = str(self.base_model.__class__.__name__)
+        obj_dict = str(self.base_model.__dict__)
+        obj_str = f"[{cls_name}] ({self.base_model.id}) {obj_dict}"
+        self.assertEqual(obj_str, self.base_model.__str__())
 
-    def test_save(self):
-        self.updated_at = datetime.now()
-        self.base_model.save()
-        self.assertNotEqual(datetime.now, self.base_model.updated_at)
+    def test_to_dict_method(self):
+        """Test case for 'to_dict' method"""
+        dict = {
+            "id": self.base_model.id,
+            "__class__": self.base_model.__class__.__name__,
+            "created_at": self.base_model.created_at.isoformat(),
+            "updated_at": self.base_model.updated_at.isoformat()
+        }
+        self.assertDictEqual(dict, self.base_model.to_dict())

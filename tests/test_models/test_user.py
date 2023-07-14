@@ -1,26 +1,24 @@
+#!/usr/bin/python3
+"""Unittest Module for User class"""
+
 import unittest
 from models.user import User
 
-class UserTestCase(unittest.TestCase):
-    """Test case for the User class."""
 
-    def test_email_initialization(self):
-        """Test the initialization of the email attribute."""
+class TestUser(unittest.TestCase):
+    """testing the correct functioning of the class"""
+    def test_str_attr(self):
+        """test attributes"""
         user = User()
         self.assertEqual(user.email, "")
-        
-    def test_password_initialization(self):
-        """Test the initialization of the password attribute."""
-        user = User()
         self.assertEqual(user.password, "")
-        
-    def test_first_name_initialization(self):
-        """Test the initialization of the first_name attribute."""
-        user = User()
         self.assertEqual(user.first_name, "")
-        
-    def test_last_name_initialization(self):
-        """Test the initialization of the last_name attribute."""
-        user = User()
-        self.assertEqual(user.last_name, "")    
+        self.assertEqual(user.last_name, "")
 
+    def test_str(self):
+        """attribute type test"""
+        user = User()
+        self.assertEqual(type(user.email), str)
+        self.assertEqual(type(user.password), str)
+        self.assertEqual(type(user.first_name), str)
+        self.assertEqual(type(user.last_name), str)
