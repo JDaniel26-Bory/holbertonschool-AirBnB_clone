@@ -4,6 +4,14 @@
 import cmd
 from models.base_model import BaseModel
 from models import storage
+from models.user import User
+
+
+
+class_names_str = [
+    "BaseModel"
+]
+all_data = storage.all()
 
 
 class HBNBCommand(cmd.Cmd):
@@ -30,138 +38,156 @@ class HBNBCommand(cmd.Cmd):
         """Do nothing when an empty line is entered."""
         pass
 
-    def do_create(self, arg):
+
+    def do_create(self, args: str) -> None:
         """Create a new instance of BaseModel"""
-        if not arg:
+        arg_list = args.split()
+        if not arg_list:
             print("** class name missing **")
             return
-
-        args = arg.split()
-        class_name = args[0]
-
-        if class_name not in self.valid_classes:
+        class_name = arg_list[0]
+        if class_name not in class_names_str:
             print("** class doesn't exist **")
             return
 
-        new_instance = eval(f"{class_name}()")  # Create new instance
-        new_instance.save()  # Save the instance
-        print(new_instance.id)  # Print the ID
+        # Process
+        new_instance = eval(class_name)()
 
-    def do_show(self, args):
-        """ Method to show an individual object """
-        new = args.partition(" ")
-        c_name = new[0]
-        c_id = new[2]
-
-        # guard against trailing args
-        if c_id and ' ' in c_id:
-            c_id = c_id.partition(' ')[0]
-
-        if not c_name:
-            print("** class name missing **")
-            return
-
-        if c_name not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-
-        if not c_id:
-            print("** instance id missing **")
-            return
-
-        key = c_name + "." + c_id
-        try:
-            print(storage._FileStorage__objects[key])
-        except KeyError:
-            print("** no instance found **")
+        new_instance.save()
+        print(new_instance.id)
         
 
-    def do_destroy(self, args):
-        """ Destroys a specified object """
-        new = args.partition(" ")
-        c_name = new[0]
-        c_id = new[2]
-        if c_id and ' ' in c_id:
-            c_id = c_id.partition(' ')[0]
+    def do_show(self, args: str) -> None:
+        """ Method to show an individual object """
 
-        if not c_name:
+        arg_list = args.split()
+        if not arg_list:
             print("** class name missing **")
             return
 
-        if c_name not in HBNBCommand.classes:
+        class_name = arg_list[0]
+
+        if class_name not in class_names_str:
             print("** class doesn't exist **")
             return
-
-        if not c_id:
+        if len(arg_list) < 2:
             print("** instance id missing **")
             return
 
-        key = c_name + "." + c_id
+        instance_id = arg_list[1]
 
+        # Process
+        model = all_data.get(f"{class_name}.{instance_id}", None)
+
+        if model is None:
+            print("** no instance found **")
+            return
+
+        print(model)
+
+    def do_destroy(self, args: str) -> None:
+        """ Destroys a specified object """
+
+        arg_list = args.split()
+        if not arg_list:
+            print("** class name missing **")
+            return
+
+        class_name = arg_list[0]
+
+        if class_name not in class_names_str:
+            print("** class doesn't exist **")
+            return
+        if len(arg_list) < 2:
+            print("** instance id missing **")
+            return
+
+        instance_id = arg_list[1]
+
+        # Process
         try:
-            del(storage.all()[key])
-            storage.save()
+            all_data.pop(f"{class_name}.{instance_id}")
         except KeyError:
             print("** no instance found **")
+            return
 
-    def do_all(self, arg):
-        """ Shows all objects, or all objects of a class"""
+        storage.save()
 
-        print_list = []
+    def do_all(self, args: Optional[str]) -> None:
 
-        if args:
-            args = args.split(' ')[0]  # remove possible trailing args
-            if args not in HBNBCommand.classes:
-                print("** class doesn't exist **")
-                return
-            for k, v in storage.all().items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
-        else:
-            for k, v in storage.all().items():
-                print_list.append(str(v))
+        arg_list = args.split()
+        if arg_list and arg_list[0] not in class_names_str:
+            print("** class doesn't exist **")
+            return
+        try:  # if only write all
+            class_name = arg_list[0]
+        except Exception:
+            pass
 
-        print(print_list)
+        # Process
+        objects = [str(obj) for obj in all_data.values()  # if only write all
+                   if args == "" or str(obj).startswith(f"[{class_name}]")]
+
+        print(objects)
 
 
-    def do_update(self, arg):
+    def do_update(self, args: str) -> None:
         """Update an instance"""
-        if not arg:
+        arg_list = args.split()
+        if not arg_list:
             print("** class name missing **")
             return
 
-        args = arg.split()
-        class_name = args[0]
+        class_name = arg_list[0]
 
-        if class_name not in self.valid_classes:
+        if class_name not in class_names_str:
             print("** class doesn't exist **")
             return
-
-        if len(args) < 2:
+        if len(arg_list) < 2:
             print("** instance id missing **")
             return
 
-        instance_id = args[1]
-        key = f"{class_name}.{instance_id}"
-        all_objects = storage.all()
+        instance_id = arg_list[1]
 
-        if key not in all_objects:
+        instance = all_data.get(f"{class_name}.{instance_id}", None)
+
+        if instance is None:
             print("** no instance found **")
             return
 
-        if len(args) < 3:
+        if len(arg_list) < 3:
             print("** attribute name missing **")
             return
 
-        attribute_name = args[2]
-
-        if len(args) < 4:
+        if len(arg_list) < 4:
             print("** value missing **")
             return
 
-        attribute_value = args[3]
-        instance = all_objects[key]
+        is_dict = False
+        for i in args:
+            if i == '{':
+                is_dict = True
+
+        if is_dict:
+            dicty = "".join(arg_list[2:])
+            dictionary = eval(dicty)
+
+            if (isinstance(dictionary, dict)):
+                for key, value in dictionary.items():
+                    setattr(instance, key, value)
+
+                instance.save()
+                return
+
+        attribute_name = arg_list[2]
+        attribute_value = eval(arg_list[3])
+
+        if attribute_name in ["id", "created_at", "updated_at"]:
+            print("** this attribute can't be change **")
+            return
+
         setattr(instance, attribute_name, attribute_value)
+
         instance.save()
 
 
