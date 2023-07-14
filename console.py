@@ -47,82 +47,79 @@ class HBNBCommand(cmd.Cmd):
         new_instance.save()  # Save the instance
         print(new_instance.id)  # Print the ID
 
-    def do_show(self, args):
-        """ Method to show an individual object """
-        new = args.partition(" ")
-        c_name = new[0]
-        c_id = new[2]
-
-        # guard against trailing args
-        if c_id and ' ' in c_id:
-            c_id = c_id.partition(' ')[0]
-
-        if not c_name:
+    def do_show(self, arg):
+        """Print the string representation of an instance"""
+        if not arg:
             print("** class name missing **")
             return
 
-        if c_name not in HBNBCommand.classes:
+        args = arg.split()
+        class_name = args[0]
+
+        if class_name not in self.valid_classes:
             print("** class doesn't exist **")
             return
 
-        if not c_id:
+        if len(args) < 2:
             print("** instance id missing **")
             return
 
-        key = c_name + "." + c_id
-        try:
-            print(storage._FileStorage__objects[key])
-        except KeyError:
+        instance_id = args[1]
+        key = f"{class_name}.{instance_id}"
+        all_objects = storage.all()
+
+        if key in all_objects:
+            print(all_objects[key])
+        else:
             print("** no instance found **")
-        
 
-    def do_destroy(self, args):
-        """ Destroys a specified object """
-        new = args.partition(" ")
-        c_name = new[0]
-        c_id = new[2]
-        if c_id and ' ' in c_id:
-            c_id = c_id.partition(' ')[0]
-
-        if not c_name:
+    def do_destroy(self, arg):
+        """Delete an instance based on the class name and id"""
+        if not arg:
             print("** class name missing **")
             return
 
-        if c_name not in HBNBCommand.classes:
+        args = arg.split()
+        class_name = args[0]
+
+        if class_name not in self.valid_classes:
             print("** class doesn't exist **")
             return
 
-        if not c_id:
+        if len(args) < 2:
             print("** instance id missing **")
             return
 
-        key = c_name + "." + c_id
+        instance_id = args[1]
+        key = f"{class_name}.{instance_id}"
+        all_objects = storage.all()
 
-        try:
-            del(storage.all()[key])
+        if key in all_objects:
+            del all_objects[key]
             storage.save()
-        except KeyError:
+        else:
             print("** no instance found **")
 
     def do_all(self, arg):
-        """ Shows all objects, or all objects of a class"""
+        """Print all instances"""
+        args = arg.split()
+        all_objects = storage.all()
 
-        print_list = []
+        if not arg:
+            print([str(obj) for obj in all_objects.values()])
+            return
 
-        if args:
-            args = args.split(' ')[0]  # remove possible trailing args
-            if args not in HBNBCommand.classes:
-                print("** class doesn't exist **")
-                return
-            for k, v in storage.all().items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
-        else:
-            for k, v in storage.all().items():
-                print_list.append(str(v))
+        class_name = args[0]
 
-        print(print_list)
+        if class_name not in self.valid_classes:
+            print("** class doesn't exist **")
+            return
 
+        filtered_objects = [
+            str(obj) for obj in all_objects.values()
+            if obj.__class__.__name__ == class_name
+        ]
+        print(filtered_objects)
 
     def do_update(self, arg):
         """Update an instance"""
