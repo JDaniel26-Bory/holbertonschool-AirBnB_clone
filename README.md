@@ -152,10 +152,7 @@ Michel Caballero : [LinkedIn/Michel] | [GitHub/MichiCaballero07] | [Twitter/Mich
 ## Authors: :genie_woman::genie_man:
 
 
-* ![GitHub Contributors Image](https://contrib.rocks/image?repo=SANTIAGOH22/holbertonschool-low_level_programming)
- - <a href="https://github.com/JDaniel26-Bory" target="_blank"> @JDaniel26-Bory</a> :genie_man:![Your Repository's Stats](https://github-readme-stats.vercel.app/api?username=JDaniel26-Bory&show_icons=true)
+* ![GitHub Contributors Image](https://github.com/JDaniel26-Bory/holbertonschool-AirBnB_clone) - <a href="https://github.com/JDaniel26-Bory" target="_blank"> @JDaniel26-Bory</a> :genie_man:![Your Repository's Stats](https://github-readme-stats.vercel.app/api?username=JDaniel26-Bory&show_icons=true)
 
-
-* ![GitHub Contributors Image](https://contrib.rocks/image?repo=MichiCaballero07/holbertonschool-low_level_programming) 
-Michel Caballero - <a href="https://github.com/MichiCaballero07" target="_blank"> @MichiCaballero07</a> :genie_woman:![Your Repository's Stats](https://github-readme-stats.vercel.app/api?username=MichiCaballero07&show_icons=true)
+* ![GitHub Contributors Image](https://github.com/JDaniel26-Bory/holbertonschool-AirBnB_clone) - <a href="https://github.com/MichiCaballero07" target="_blank"> @MichiCaballero07</a> :genie_woman:![Your Repository's Stats](https://github-readme-stats.vercel.app/api?username=MichiCaballero07&show_icons=true)
 ***
