@@ -10,7 +10,7 @@ Our command interprer is able to manage the objects of our project:
 * Update attributes of an object
 * Destroy an object
 ### Programming languge
-This project is written in Python 3.0, and use the pycodestyle(version 2.8.*)
+This project is written in Python 3.8.5, and use the pycodestyle(version 2.7.*)
 ### Description of each files:
 | Folder Name | File Name | Description |
 |-------------|-----------|-------------|
