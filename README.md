@@ -23,7 +23,6 @@ This project is written in Python 3.8.5, and use the pycodestyle(version 2.7.*)
 | models | city.py | inherits from BaseModel, defines class Place |
 | models | place.py | inherits from BaseModel, defines class User |
 | models | state.py | inherits from BaseModel, defines class State |
-| models | review.py | inherits from BaseModel, defines class Review |
 | models/engine | file_storage | serializes instances to a JSON file and deserializes JSON file to instances |
 | tests | test_console.py | unittest for methods in console.py
 | tests/test_models | test_base_model.py | unittest for class BaseModel
@@ -33,7 +32,7 @@ This project is written in Python 3.8.5, and use the pycodestyle(version 2.7.*)
 | tests/test_models | test_place.py | unittest for class Place
 | tests/test_models | test_state.py | unittest for class State
 | tests/test_models | test_file_storage.py | unittest for storing objects in JSON file |
-| tests/test_models/engine | test_console.py | unittest for functionalities of console.py |
+
 
 ### How to start the command interpreter
 1. git clone https://github.com/JDaniel26-Bory/holbertonschool-AirBnB_clone
